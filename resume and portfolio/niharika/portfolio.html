@@ -1,0 +1,934 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Niharika Choudhary — Data Analyst</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:ital,wght@0,300;0,400;1,300&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --bg: #080C14;
+    --surface: #0D1220;
+    --surface2: #111827;
+    --border: #1E2940;
+    --accent: #3B82F6;
+    --accent2: #60A5FA;
+    --accent-glow: rgba(59,130,246,0.15);
+    --accent-glow2: rgba(59,130,246,0.06);
+    --text: #E2E8F0;
+    --text-muted: #64748B;
+    --text-dim: #94A3B8;
+    --tag-bg: rgba(59,130,246,0.1);
+    --tag-border: rgba(59,130,246,0.25);
+    --green: #10B981;
+    --green-glow: rgba(16,185,129,0.1);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  /* Noise texture overlay */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.4;
+  }
+
+  /* Background grid */
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(59,130,246,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(59,130,246,0.03) 1px, transparent 1px);
+    background-size: 48px 48px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    background: rgba(8,12,20,0.85);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 clamp(1.5rem, 5vw, 4rem);
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .nav-logo {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 1rem;
+    color: var(--text);
+    letter-spacing: 0.02em;
+    text-decoration: none;
+  }
+
+  .nav-logo span { color: var(--accent); }
+
+  .nav-links {
+    display: flex;
+    gap: 2rem;
+    list-style: none;
+  }
+
+  .nav-links a {
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 0.82rem;
+    font-family: 'DM Mono', monospace;
+    letter-spacing: 0.05em;
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover { color: var(--accent2); }
+
+  /* SECTIONS */
+  section {
+    position: relative;
+    z-index: 1;
+    padding: 6rem clamp(1.5rem, 8vw, 10rem);
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  /* HERO */
+  #hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-top: 8rem;
+    padding-bottom: 4rem;
+  }
+
+  .hero-eyebrow {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.78rem;
+    color: var(--accent);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 1.2rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    animation: fadeUp 0.6s ease both;
+  }
+
+  .hero-eyebrow::before {
+    content: '';
+    display: inline-block;
+    width: 28px;
+    height: 1px;
+    background: var(--accent);
+  }
+
+  .hero-name {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(3rem, 7vw, 5.5rem);
+    font-weight: 800;
+    line-height: 1.05;
+    color: var(--text);
+    margin-bottom: 1rem;
+    animation: fadeUp 0.6s 0.1s ease both;
+  }
+
+  .hero-name .highlight {
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .hero-role {
+    font-size: 1.1rem;
+    color: var(--text-dim);
+    margin-bottom: 1.8rem;
+    font-weight: 300;
+    animation: fadeUp 0.6s 0.2s ease both;
+  }
+
+  .hero-desc {
+    max-width: 560px;
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    line-height: 1.8;
+    margin-bottom: 2.5rem;
+    animation: fadeUp 0.6s 0.3s ease both;
+  }
+
+  .hero-ctas {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    animation: fadeUp 0.6s 0.4s ease both;
+  }
+
+  .btn-primary {
+    padding: 0.75rem 1.8rem;
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.88rem;
+    font-weight: 500;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.2s;
+    box-shadow: 0 0 20px rgba(59,130,246,0.3);
+  }
+
+  .btn-primary:hover {
+    background: var(--accent2);
+    box-shadow: 0 0 30px rgba(59,130,246,0.5);
+    transform: translateY(-1px);
+  }
+
+  .btn-outline {
+    padding: 0.75rem 1.8rem;
+    background: transparent;
+    color: var(--text-dim);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.88rem;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.2s;
+  }
+
+  .btn-outline:hover {
+    border-color: var(--accent);
+    color: var(--accent2);
+  }
+
+  .hero-stats {
+    display: flex;
+    gap: 3rem;
+    margin-top: 4rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--border);
+    animation: fadeUp 0.6s 0.5s ease both;
+    flex-wrap: wrap;
+  }
+
+  .stat-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--accent);
+  }
+
+  .stat-label {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    font-family: 'DM Mono', monospace;
+    margin-top: 0.15rem;
+    letter-spacing: 0.03em;
+  }
+
+  /* SECTION HEADINGS */
+  .section-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--accent);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 0.6rem;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+
+  .section-label::before {
+    content: '';
+    display: inline-block;
+    width: 20px;
+    height: 1px;
+    background: var(--accent);
+  }
+
+  .section-title {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(1.6rem, 3vw, 2.2rem);
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 3rem;
+    line-height: 1.2;
+  }
+
+  /* SKILLS */
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 1.2rem;
+  }
+
+  .skill-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.4rem;
+    transition: all 0.25s;
+  }
+
+  .skill-card:hover {
+    border-color: var(--accent);
+    background: var(--surface2);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px var(--accent-glow);
+  }
+
+  .skill-category {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--accent);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 0.8rem;
+  }
+
+  .skill-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+
+  .tag {
+    padding: 0.25rem 0.65rem;
+    background: var(--tag-bg);
+    border: 1px solid var(--tag-border);
+    border-radius: 4px;
+    font-size: 0.78rem;
+    color: var(--accent2);
+    font-family: 'DM Mono', monospace;
+    transition: all 0.2s;
+  }
+
+  .tag:hover {
+    background: rgba(59,130,246,0.2);
+  }
+
+  /* PROJECTS */
+  .projects-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.8rem;
+  }
+
+  .project-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 2rem;
+    transition: all 0.25s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .project-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--accent), transparent);
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .project-card:hover {
+    border-color: rgba(59,130,246,0.4);
+    box-shadow: 0 12px 40px var(--accent-glow2);
+    transform: translateY(-2px);
+  }
+
+  .project-card:hover::before { opacity: 1; }
+
+  .project-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 1rem;
+    margin-bottom: 0.8rem;
+    flex-wrap: wrap;
+  }
+
+  .project-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--text);
+  }
+
+  .project-badge {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.68rem;
+    padding: 0.25rem 0.7rem;
+    border-radius: 20px;
+    letter-spacing: 0.06em;
+    white-space: nowrap;
+  }
+
+  .badge-group {
+    background: rgba(16,185,129,0.1);
+    border: 1px solid rgba(16,185,129,0.25);
+    color: #10B981;
+  }
+
+  .badge-solo {
+    background: rgba(168,85,247,0.1);
+    border: 1px solid rgba(168,85,247,0.25);
+    color: #C084FC;
+  }
+
+  .project-desc {
+    color: var(--text-muted);
+    font-size: 0.88rem;
+    line-height: 1.75;
+    margin-bottom: 1.2rem;
+  }
+
+  .project-highlights {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    margin-bottom: 1.4rem;
+  }
+
+  .project-highlights li {
+    font-size: 0.84rem;
+    color: var(--text-dim);
+    padding-left: 1.2rem;
+    position: relative;
+    line-height: 1.6;
+  }
+
+  .project-highlights li::before {
+    content: '›';
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .project-highlights strong { color: var(--text); }
+
+  .project-tools {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+
+  .tool-tag {
+    padding: 0.2rem 0.6rem;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    font-size: 0.73rem;
+    color: var(--text-muted);
+    font-family: 'DM Mono', monospace;
+    transition: all 0.2s;
+  }
+
+  .tool-tag:hover {
+    border-color: var(--accent);
+    color: var(--accent2);
+  }
+
+  /* ABOUT / EDUCATION */
+  .edu-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.8rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+  }
+
+  .edu-degree {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 0.3rem;
+  }
+
+  .edu-school {
+    color: var(--text-muted);
+    font-size: 0.88rem;
+  }
+
+  .edu-year {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.82rem;
+    color: var(--accent);
+    white-space: nowrap;
+  }
+
+  .certs-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    margin-top: 1.5rem;
+  }
+
+  .cert-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 1.4rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    transition: all 0.2s;
+  }
+
+  .cert-item:hover {
+    border-color: var(--accent);
+    background: var(--surface2);
+  }
+
+  .cert-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--accent);
+    flex-shrink: 0;
+    box-shadow: 0 0 8px var(--accent);
+  }
+
+  .cert-name {
+    font-size: 0.88rem;
+    color: var(--text);
+    font-weight: 500;
+  }
+
+  .cert-issuer {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    font-family: 'DM Mono', monospace;
+    margin-top: 0.15rem;
+  }
+
+  /* CONTACT */
+  .contact-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1rem;
+  }
+
+  .contact-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.4rem;
+    text-decoration: none;
+    transition: all 0.25s;
+    display: block;
+  }
+
+  .contact-card:hover {
+    border-color: var(--accent);
+    background: var(--surface2);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px var(--accent-glow);
+  }
+
+  .contact-icon {
+    font-size: 1.3rem;
+    margin-bottom: 0.6rem;
+  }
+
+  .contact-type {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.68rem;
+    color: var(--text-muted);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 0.25rem;
+  }
+
+  .contact-value {
+    font-size: 0.85rem;
+    color: var(--accent2);
+    word-break: break-all;
+  }
+
+  /* DIVIDER */
+  .section-divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 0 clamp(1.5rem, 8vw, 10rem);
+  }
+
+  /* FOOTER */
+  footer {
+    text-align: center;
+    padding: 2.5rem;
+    border-top: 1px solid var(--border);
+    color: var(--text-muted);
+    font-family: 'DM Mono', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.06em;
+    position: relative;
+    z-index: 1;
+  }
+
+  footer span { color: var(--accent); }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(18px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .fade-in {
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity 0.55s ease, transform 0.55s ease;
+  }
+
+  .fade-in.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+
+  @media (max-width: 640px) {
+    nav { padding: 0 1.2rem; }
+    .nav-links { gap: 1.2rem; }
+    .hero-stats { gap: 1.5rem; }
+    section { padding: 4rem 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#hero" class="nav-logo">NC<span>.</span></a>
+  <ul class="nav-links">
+    <li><a href="#skills">skills</a></li>
+    <li><a href="#projects">projects</a></li>
+    <li><a href="#education">education</a></li>
+    <li><a href="#contact">contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-eyebrow">Data Analyst</div>
+  <h1 class="hero-name">Niharika<br/><span class="highlight">Choudhary</span></h1>
+  <p class="hero-role">Python &nbsp;·&nbsp; Tableau &nbsp;·&nbsp; Scikit-learn &nbsp;·&nbsp; Looker Studio</p>
+  <p class="hero-desc">
+    Building end-to-end analytics pipelines that turn messy datasets into revenue-impacting decisions.
+    From ETL to interactive dashboards — I work across the full analytics stack.
+  </p>
+  <div class="hero-ctas">
+    <a href="#projects" class="btn-primary">View Projects</a>
+    <a href="https://github.com/NullInTheHead" target="_blank" class="btn-outline">GitHub →</a>
+  </div>
+  <div class="hero-stats">
+    <div>
+      <div class="stat-num">3</div>
+      <div class="stat-label">Projects</div>
+    </div>
+    <div>
+      <div class="stat-num">29K+</div>
+      <div class="stat-label">Records Analysed</div>
+    </div>
+    <div>
+      <div class="stat-num">4</div>
+      <div class="stat-label">Dashboards Built</div>
+    </div>
+    <div>
+      <div class="stat-num">10</div>
+      <div class="stat-label">US States Covered</div>
+    </div>
+  </div>
+</section>
+
+<hr class="section-divider"/>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="fade-in">
+    <div class="section-label">capabilities</div>
+    <h2 class="section-title">Technical Skills</h2>
+  </div>
+  <div class="skills-grid">
+    <div class="skill-card fade-in">
+      <div class="skill-category">Languages</div>
+      <div class="skill-tags">
+        <span class="tag">Python</span>
+        <span class="tag">SQL</span>
+      </div>
+    </div>
+    <div class="skill-card fade-in">
+      <div class="skill-category">Analysis</div>
+      <div class="skill-tags">
+        <span class="tag">Pandas</span>
+        <span class="tag">NumPy</span>
+        <span class="tag">Scikit-learn</span>
+        <span class="tag">KMeans</span>
+        <span class="tag">EDA</span>
+      </div>
+    </div>
+    <div class="skill-card fade-in">
+      <div class="skill-category">Statistics</div>
+      <div class="skill-tags">
+        <span class="tag">Hypothesis Testing</span>
+        <span class="tag">Welch's t-test</span>
+        <span class="tag">IQR</span>
+        <span class="tag">Regression</span>
+      </div>
+    </div>
+    <div class="skill-card fade-in">
+      <div class="skill-category">Visualization</div>
+      <div class="skill-tags">
+        <span class="tag">Tableau</span>
+        <span class="tag">Looker Studio</span>
+        <span class="tag">Matplotlib</span>
+        <span class="tag">Seaborn</span>
+      </div>
+    </div>
+    <div class="skill-card fade-in">
+      <div class="skill-category">Tools</div>
+      <div class="skill-tags">
+        <span class="tag">Jupyter</span>
+        <span class="tag">Google Sheets</span>
+        <span class="tag">Git</span>
+        <span class="tag">GitHub</span>
+      </div>
+    </div>
+    <div class="skill-card fade-in">
+      <div class="skill-category">Concepts</div>
+      <div class="skill-tags">
+        <span class="tag">ETL Pipelines</span>
+        <span class="tag">Feature Engineering</span>
+        <span class="tag">Clustering</span>
+        <span class="tag">Price Elasticity</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="section-divider"/>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="fade-in">
+    <div class="section-label">work</div>
+    <h2 class="section-title">Projects</h2>
+  </div>
+
+  <div class="projects-list">
+
+    <!-- Project 1 -->
+    <div class="project-card fade-in">
+      <div class="project-header">
+        <div class="project-title">US House Price Analysis Across 10 States</div>
+        <span class="project-badge badge-group">Group · DVA Capstone</span>
+      </div>
+      <p class="project-desc">
+        End-to-end Python ETL pipeline and Tableau dashboard suite analysing 11,410 residential listings
+        across 10 US states, uncovering cross-state pricing patterns for investors and brokerage firms.
+      </p>
+      <ul class="project-highlights">
+        <li>Built a <strong>5-notebook ETL pipeline</strong> with feature engineering: <code>price_per_sqft</code>, <code>weekday</code>, <code>is_weekend</code></li>
+        <li>Ran <strong>Welch's t-test</strong> — confirmed $150K weekday/weekend price gap is compositional, not strategic</li>
+        <li>Scenario analysis: removing California collapses national avg by <strong>45%</strong> ($975K → $534K)</li>
+        <li>Identified <strong>North Carolina as top efficiency market</strong> — $684/sqft at 38% of California's entry cost</li>
+        <li>Delivered <strong>3 interactive Tableau dashboards</strong> for geographic, broker, and trend analysis</li>
+      </ul>
+      <div class="project-tools">
+        <span class="tool-tag">Python</span>
+        <span class="tool-tag">Pandas</span>
+        <span class="tool-tag">Tableau</span>
+        <span class="tool-tag">Welch's t-test</span>
+        <span class="tool-tag">IQR</span>
+        <span class="tool-tag">Shapiro-Wilk</span>
+        <span class="tool-tag">Jupyter</span>
+        <a href="https://github.com/vaidehisahu1/B_G8_HOUSEPRICELIST" target="_blank" class="tool-tag" style="color:var(--accent2);border-color:var(--tag-border);text-decoration:none;">⬡ GitHub →</a>
+      </div>
+    </div>
+
+    <!-- Project 2 -->
+    <div class="project-card fade-in">
+      <div class="project-header">
+        <div class="project-title">Blinkit Pricing Intelligence Dashboard</div>
+        <span class="project-badge badge-solo">Solo Project</span>
+      </div>
+      <p class="project-desc">
+        Pricing optimization analysis across 268 Blinkit products in 11 categories — identifying at-risk
+        products, untapped revenue potential, and segmenting the catalogue using KMeans clustering.
+      </p>
+      <ul class="project-highlights">
+        <li>Flagged <strong>26 at-risk products</strong> with discount rates >30% actively eroding margins</li>
+        <li>Estimated <strong>price elasticity</strong> — found inelastic demand, enabling margin optimisation without volume loss</li>
+        <li>Applied <strong>KMeans clustering</strong> to build 3 pricing tiers; Premium = <strong>3.3× revenue/item</strong> vs Budget</li>
+        <li>Simulated <strong>+17.6% revenue uplift</strong> in Fruits & Vegetables via MRP vs. selling price gap analysis</li>
+        <li>Identified <strong>seasonal patterns</strong> (August peak, December dip) for proactive pricing cycles</li>
+      </ul>
+      <div class="project-tools">
+        <span class="tool-tag">Python</span>
+        <span class="tool-tag">Pandas</span>
+        <span class="tool-tag">Scikit-learn</span>
+        <span class="tool-tag">KMeans</span>
+        <span class="tool-tag">Seaborn</span>
+        <span class="tool-tag">Looker Studio</span>
+        <span class="tool-tag">Google Sheets</span>
+        <a href="https://github.com/NullInTheHead/retail-price-optimization" target="_blank" class="tool-tag" style="color:var(--accent2);border-color:var(--tag-border);text-decoration:none;">⬡ GitHub →</a>
+      </div>
+    </div>
+
+    <!-- Project 3 -->
+    <div class="project-card fade-in">
+      <div class="project-header">
+        <div class="project-title">Retail Store Sales Performance Analysis</div>
+        <span class="project-badge badge-group">Group Project</span>
+      </div>
+      <p class="project-desc">
+        Full data cleaning, KPI development, and dashboard build on 12,575 retail transactions —
+        surfacing revenue concentration patterns and discount effectiveness insights.
+      </p>
+      <ul class="project-highlights">
+        <li>Cleaned <strong>12,575 records</strong>: missing values, discount imputation, derived price/quantity fields</li>
+        <li>Engineered <code>Month</code> and <code>Day_of_Week</code> features for trend decomposition</li>
+        <li>Found <strong>discounts do not significantly increase transaction frequency</strong> — key pricing insight</li>
+        <li>Built interactive dashboard tracking KPIs across revenue, location, and day-of-week patterns</li>
+      </ul>
+      <div class="project-tools">
+        <span class="tool-tag">Python</span>
+        <span class="tool-tag">Pandas</span>
+        <span class="tool-tag">Tableau</span>
+        <span class="tool-tag">EDA</span>
+        <span class="tool-tag">Feature Engineering</span>
+        <a href="https://github.com/NullInTheHead/DVA-capstone-1" target="_blank" class="tool-tag" style="color:var(--accent2);border-color:var(--tag-border);text-decoration:none;">⬡ GitHub →</a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<hr class="section-divider"/>
+
+<!-- EDUCATION -->
+<section id="education">
+  <div class="fade-in">
+    <div class="section-label">background</div>
+    <h2 class="section-title">Education & Certifications</h2>
+  </div>
+
+  <div class="edu-card fade-in">
+    <div>
+      <div class="edu-degree">B.Tech — Computer Science &amp; Artificial Intelligence</div>
+      <div class="edu-school">Newton School of Technology, Rishihood University &nbsp;·&nbsp; CGPA: 8.9 / 10</div>
+    </div>
+    <div class="edu-year">Expected 2028</div>
+  </div>
+
+  <div class="certs-list">
+    <div class="cert-item fade-in">
+      <div class="cert-dot"></div>
+      <div>
+        <div class="cert-name">Python for Data Analysis</div>
+        <div class="cert-issuer">Pandas, NumPy, EDA, Data Visualisation</div>
+      </div>
+    </div>
+    <div class="cert-item fade-in">
+      <div class="cert-dot"></div>
+      <div>
+        <div class="cert-name">SQL for Data Analytics</div>
+        <div class="cert-issuer">Joins, aggregations, window functions for business analysis</div>
+      </div>
+    </div>
+    <div class="cert-item fade-in">
+      <div class="cert-dot"></div>
+      <div>
+        <div class="cert-name">Data Visualization & Analytics — Capstone</div>
+        <div class="cert-issuer">Newton School of Technology · Python ETL + Tableau Dashboards</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="section-divider"/>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="fade-in">
+    <div class="section-label">reach out</div>
+    <h2 class="section-title">Let's Connect</h2>
+  </div>
+  <div class="contact-grid fade-in">
+    <a href="mailto:niharikac983@gmail.com" class="contact-card">
+      <div class="contact-icon">✉</div>
+      <div class="contact-type">Email</div>
+      <div class="contact-value">niharikac983@gmail.com</div>
+    </a>
+    <a href="https://linkedin.com/in/niha-rika" target="_blank" class="contact-card">
+      <div class="contact-icon">in</div>
+      <div class="contact-type">LinkedIn</div>
+      <div class="contact-value">linkedin.com/in/niha-rika</div>
+    </a>
+    <a href="https://github.com/NullInTheHead" target="_blank" class="contact-card">
+      <div class="contact-icon">⌥</div>
+      <div class="contact-type">GitHub</div>
+      <div class="contact-value">github.com/NullInTheHead</div>
+    </a>
+  </div>
+</section>
+
+<footer>
+  built by <span>Niharika Choudhary</span> · 2026
+</footer>
+
+<script>
+  // Intersection Observer for fade-in animations
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+  document.querySelectorAll('.fade-in').forEach((el, i) => {
+    el.style.transitionDelay = `${(i % 4) * 0.07}s`;
+    observer.observe(el);
+  });
+</script>
+</body>
+</html>
