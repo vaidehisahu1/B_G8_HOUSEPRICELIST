@@ -1005,6 +1005,13 @@
             <encodings>
               <text column='[federated.1rd1bor0cnpggh112cgsz06k8ixh].[avg:price:qk]' />
             </encodings>
+            <customized-label>
+              <formatted-text>
+                <run>$&lt;</run>
+                <run>[federated.1rd1bor0cnpggh112cgsz06k8ixh].[avg:price:qk]</run>
+                <run>&gt;</run>
+              </formatted-text>
+            </customized-label>
             <style>
               <style-rule element='mark'>
                 <format attr='mark-labels-show' value='true' />
@@ -1048,7 +1055,11 @@
           </slices>
           <aggregation value='true' />
         </view>
-        <style />
+        <style>
+          <style-rule element='cell'>
+            <format attr='text-format' field='[federated.1rd1bor0cnpggh112cgsz06k8ixh].[avg:bed:qk]' value='n#,##0;-#,##0' />
+          </style-rule>
+        </style>
         <panes>
           <pane selection-relaxation-option='selection-relaxation-allow'>
             <view>
@@ -1058,6 +1069,13 @@
             <encodings>
               <text column='[federated.1rd1bor0cnpggh112cgsz06k8ixh].[avg:bed:qk]' />
             </encodings>
+            <customized-label>
+              <formatted-text>
+                <run>&lt;</run>
+                <run>[federated.1rd1bor0cnpggh112cgsz06k8ixh].[avg:bed:qk]</run>
+                <run>&gt;</run>
+              </formatted-text>
+            </customized-label>
             <style>
               <style-rule element='mark'>
                 <format attr='mark-labels-show' value='true' />
@@ -1120,6 +1138,13 @@
             <encodings>
               <text column='[federated.1rd1bor0cnpggh112cgsz06k8ixh].[avg:Calculation_2211594491027459:qk]' />
             </encodings>
+            <customized-label>
+              <formatted-text>
+                <run>$&lt;</run>
+                <run>[federated.1rd1bor0cnpggh112cgsz06k8ixh].[avg:Calculation_2211594491027459:qk]</run>
+                <run>&gt;</run>
+              </formatted-text>
+            </customized-label>
             <style>
               <style-rule element='mark'>
                 <format attr='mark-labels-show' value='true' />
@@ -1503,7 +1528,7 @@
         </view>
         <style>
           <style-rule element='mark'>
-            <encoding attr='color' field='[federated.1rd1bor0cnpggh112cgsz06k8ixh].[avg:price:qk]' num-steps='5' palette='green_blue_white_diverging_10_0' type='interpolated' />
+            <encoding attr='color' field='[federated.1rd1bor0cnpggh112cgsz06k8ixh].[avg:price:qk]' num-steps='5' type='interpolated' />
           </style-rule>
           <style-rule element='map'>
             <format attr='washout' value='0.0' />
@@ -2127,7 +2152,7 @@
             <format attr='border-width' value='1' />
           </zone-style>
         </zone>
-        <zone h='10268' id='24' name='State Price Map' pane-specification-id='0' param='[federated.1rd1bor0cnpggh112cgsz06k8ixh].[avg:price:qk]' type-v2='color' w='25365' x='70100' y='1867'>
+        <zone h='10268' id='24' name='State Price Map' pane-specification-id='0' param='[federated.1rd1bor0cnpggh112cgsz06k8ixh].[avg:price:qk]' single-line='true' type-v2='color' w='25365' x='70100' y='1867'>
           <zone-style>
             <format attr='border-color' value='#000000' />
             <format attr='border-style' value='solid' />
@@ -2668,7 +2693,7 @@
       </cards>
       <simple-id uuid='{9607E5C3-4EFA-452A-9789-A68BC1CB3219}' />
     </window>
-    <window class='worksheet' name='KPI - Avg Bedroom'>
+    <window class='worksheet' maximized='true' name='KPI - Avg Bedroom'>
       <cards>
         <edge name='left'>
           <strip size='160'>
@@ -2826,10 +2851,10 @@
           <zoom type='entire-view' />
         </viewpoint>
       </viewpoints>
-      <active id='23' />
+      <active id='5' />
       <simple-id uuid='{0A2A997C-C1E9-4056-A3BA-F40C8AAB0F1F}' />
     </window>
-    <window class='dashboard' maximized='true' name='Dashboard 2'>
+    <window class='dashboard' name='Dashboard 2'>
       <viewpoints>
         <viewpoint name='Bar - Day of Week'>
           <zoom type='entire-view' />
@@ -2846,7 +2871,7 @@
         <viewpoint name='Unique Cities' />
         <viewpoint name='Weekend Listings %' />
       </viewpoints>
-      <active id='7' />
+      <active id='9' />
       <device-preview visible='true'>
         <device name='Large Desktop Monitor' type='Desktop' />
       </device-preview>
